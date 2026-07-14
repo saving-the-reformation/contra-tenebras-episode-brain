@@ -148,3 +148,17 @@ Later updates use the same deploy command.
 - Use GitHub Pages as the public link if you want the GitHub-branded address.
 - Use Cloud Firestore for the shared content database.
 - Consider Google sign-in with a team allowlist before sharing the link widely.
+
+# Enable episode file uploads
+
+The website includes a **Files** tab inside every episode for scripts, outlines, slides, PDFs, images, audio, and video files up to 50 MB.
+
+1. In Firebase, open **Build → Storage**.
+2. Click **Get started**.
+3. Choose the same location as the Firestore database when possible.
+4. Finish creating the default Storage bucket.
+5. Open the Storage **Rules** tab.
+6. Replace the rules with the contents of `storage.rules`.
+7. Click **Publish**.
+
+Depending on current Firebase plan requirements, Google may ask the project owner to enable billing before Cloud Storage can be used. Episode editing and text synchronization continue to work even when Storage is not enabled.

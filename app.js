@@ -1,4 +1,4 @@
-import { startSync, saveWorkspace } from "./sync.js";
+import { startSync, saveWorkspace, uploadEpisodeFile, deleteEpisodeFile } from "./sync.js";
 
 const initialEpisodes = [
   {
@@ -56,7 +56,9 @@ const seedCards = [
 
 const storedEpisodes = JSON.parse(localStorage.getItem("ctEpisodes") || "null");
 const storedCards = JSON.parse(localStorage.getItem("ctCards") || "null");
+const storedFiles = JSON.parse(localStorage.getItem("ctFiles") || "null");
 let episodes = storedEpisodes || initialEpisodes;
+let files = storedFiles || [];
 const contentVersion = 2;
 const storedContentVersion = Number(localStorage.getItem("ctContentVersion") || 0);
 let cards = storedCards || seedCards;
@@ -81,9 +83,10 @@ function renderEpisodes(){
 
 function renderHeader(){
   const ep=activeEpisode();
-  $("#episodeHeader").innerHTML=`<div><span class="kicker">Episode ${ep.number}</span><h2>${clean(ep.title)}</h2><p>${clean(ep.description)}</p></div><div class="episode-header-actions"><span class="episode-status">${clean(ep.status)}</span><button class="edit-episode-button" id="editEpisodeButton">Edit episode</button></div>`;
+  $("#episodeHeader").innerHTML=`<div><span class="kicker">Episode ${ep.number}</span><h2>${clean(ep.title)}</h2><p>${clean(ep.description)}</p></div><div class="episode-header-actions"><button class="episode-status" id="editStatusButton" title="Click to change status">${clean(ep.status)} <span>✎</span></button><button class="edit-episode-button" id="editEpisodeButton">Edit episode</button></div>`;
   $("#modalEpisodeLabel").textContent=`Episode ${ep.number}`;
   $("#editEpisodeButton").addEventListener("click",openEpisodeEditor);
+  $("#editStatusButton").addEventListener("click",openEpisodeEditor);
 }
 
 function renderCards(){
@@ -108,13 +111,17 @@ function renderAbout(){
   const ep=activeEpisode();$("#episodeThesis").textContent=ep.thesis;$("#episodeNeeds").innerHTML=ep.needs.map(need=>`<li>${clean(need)}</li>`).join("");
 }
 
+function formatFileSize(bytes){if(bytes<1024)return `${bytes} B`;if(bytes<1024*1024)return `${(bytes/1024).toFixed(1)} KB`;return `${(bytes/(1024*1024)).toFixed(1)} MB`}
+function fileKind(name){const extension=name.split(".").pop()?.toUpperCase()||"FILE";return extension.length>5?"FILE":extension}
+function renderFiles(){const episodeFiles=files.filter(file=>file.episodeId===activeEpisodeId).sort((a,b)=>new Date(b.uploadedAt)-new Date(a.uploadedAt));$("#episodeFiles").innerHTML=episodeFiles.length?episodeFiles.map(file=>`<article class="file-card"><span class="file-type">${clean(fileKind(file.name))}</span><div><a href="${clean(file.url)}" target="_blank" rel="noopener">${clean(file.name)}</a><p>${formatFileSize(file.size)} · Added by ${clean(file.nameAddedBy||"Team")} · ${new Date(file.uploadedAt).toLocaleDateString()}</p></div><div class="file-actions"><a href="${clean(file.url)}" target="_blank" rel="noopener">Open</a><button data-delete-file="${file.id}">Delete</button></div></article>`).join(""):`<div class="files-empty"><span>⇧</span><strong>No files uploaded yet</strong><p>Add the script, outline, slides, source PDFs, images, or recording materials for this episode.</p></div>`;$$('[data-delete-file]').forEach(button=>button.addEventListener("click",async()=>{const file=files.find(item=>item.id===button.dataset.deleteFile);if(!file||!confirm(`Delete ${file.name}?`))return;try{await deleteEpisodeFile(file.path);files=files.filter(item=>item.id!==file.id);persistWorkspace();renderFiles();showToast("File deleted.")}catch(error){showToast(error.message||"Could not delete file.")}}))}
+
 function renderTabs(){
   $$(".episode-tabs button").forEach(button=>button.classList.toggle("active",button.dataset.tab===activeTab));
   $$(".tab-panel").forEach(panel=>panel.classList.remove("active"));$("#"+activeTab+"Panel").classList.add("active");
 }
 
-function renderAll(){renderEpisodes();renderHeader();renderCards();renderPlan();renderAbout();renderTabs()}
-function persistWorkspace(){localStorage.setItem("ctCards",JSON.stringify(cards));localStorage.setItem("ctEpisodes",JSON.stringify(episodes));saveWorkspace({episodes,cards}).catch(error=>console.error("Remote save failed",error))}
+function renderAll(){renderEpisodes();renderHeader();renderCards();renderPlan();renderAbout();renderFiles();renderTabs()}
+function persistWorkspace(){localStorage.setItem("ctCards",JSON.stringify(cards));localStorage.setItem("ctEpisodes",JSON.stringify(episodes));localStorage.setItem("ctFiles",JSON.stringify(files));saveWorkspace({episodes,cards,files}).catch(error=>console.error("Remote save failed",error))}
 function saveCards(){persistWorkspace()}
 function saveEpisodes(){persistWorkspace()}
 function openModal(id,kind){const modal=$("#"+id);modal.classList.add("open");modal.setAttribute("aria-hidden","false");if(kind){const radio=$(`input[name='kind'][value='${kind}']`);if(radio)radio.checked=true;}if(id==="contributionModal"&&!editingCardId){const saved=localStorage.getItem("ctPerson")||"";$("#contributionName").value=saved;$("#contributionTitle").textContent="Add to the episode brain";$("#contributionForm button[type='submit']").textContent="Add it";setTimeout(()=>$("#contributionTitleInput").focus(),100)}}
@@ -127,11 +134,12 @@ function openEpisodeEditor(){const ep=activeEpisode();$("#editEpisodeName").valu
 document.addEventListener("DOMContentLoaded",()=>{
   const savedName=localStorage.getItem("ctPerson")||"";$("#personName").value=savedName;if(savedName){$("#currentPersonMessage").textContent=`You are adding as ${savedName}.`;$("#currentPersonMessage").classList.add("named")}
   renderAll();
-  startSync({episodes,cards},data=>{episodes=data.episodes;cards=data.cards;localStorage.setItem("ctEpisodes",JSON.stringify(episodes));localStorage.setItem("ctCards",JSON.stringify(cards));renderAll()},(state,message)=>{const status=$("#syncStatus");status.className=`sync-status ${state}`;status.innerHTML=`<i></i> ${clean(message)}`});
+  startSync({episodes,cards,files},data=>{episodes=data.episodes;cards=data.cards;files=data.files||[];localStorage.setItem("ctEpisodes",JSON.stringify(episodes));localStorage.setItem("ctCards",JSON.stringify(cards));localStorage.setItem("ctFiles",JSON.stringify(files));renderAll()},(state,message)=>{const status=$("#syncStatus");status.className=`sync-status ${state}`;status.innerHTML=`<i></i> ${clean(message)}`});
   $("#saveName").addEventListener("click",updatePerson);$("#personName").addEventListener("keydown",event=>{if(event.key==="Enter")updatePerson()});
   $$(".episode-tabs button").forEach(button=>button.addEventListener("click",()=>{activeTab=button.dataset.tab;renderTabs()}));
   $("#openContributionForm").addEventListener("click",()=>{editingCardId=null;$("#contributionForm").reset();openModal("contributionModal")});$$(".add-inline").forEach(button=>button.addEventListener("click",()=>{editingCardId=null;$("#contributionForm").reset();openModal("contributionModal",button.dataset.kind)}));
   $("#openEpisodeForm").addEventListener("click",()=>openModal("episodeModal"));
+  $("#episodeFileInput").addEventListener("change",async event=>{const file=event.target.files[0];if(!file)return;if(file.size>50*1024*1024){showToast("Please choose a file smaller than 50 MB.");event.target.value="";return}const person=localStorage.getItem("ctPerson")||$("#personName").value.trim();if(!person){showToast("Type and save your name before uploading.");event.target.value="";return}const progress=$("#uploadProgress");progress.hidden=false;$("span",progress).textContent=`Uploading ${file.name}…`;try{const uploaded=await uploadEpisodeFile(file,activeEpisodeId,percent=>{$("i",progress).style.width=`${percent}%`;$("span",progress).textContent=`Uploading ${file.name} — ${percent}%`});files.unshift({id:`file-${Date.now()}`,episodeId:activeEpisodeId,nameAddedBy:person,...uploaded});persistWorkspace();renderFiles();showToast("File uploaded and shared.")}catch(error){console.error(error);showToast(error.message||"File upload is not enabled yet.")}finally{progress.hidden=true;$("i",progress).style.width="0";event.target.value=""}});
   $$('[data-close]').forEach(button=>button.addEventListener("click",()=>closeModal(button.dataset.close)));$$('.modal').forEach(modal=>modal.addEventListener("click",event=>{if(event.target===modal)closeModal(modal.id)}));
   $("#contributionForm").addEventListener("submit",event=>{event.preventDefault();const name=$("#contributionName").value.trim();const values={kind:$("input[name='kind']:checked").value,title:$("#contributionTitleInput").value.trim(),body:$("#contributionBody").value.trim(),name};if(editingCardId){const card=cards.find(item=>item.id===editingCardId);Object.assign(card,values);showToast("Contribution updated.")}else{cards.unshift({id:`card-${Date.now()}`,episodeId:activeEpisodeId,...values,created:new Date().toLocaleDateString(undefined,{month:"short",day:"numeric"})});showToast("Added to this episode.")}saveCards();localStorage.setItem("ctPerson",name);$("#personName").value=name;$("#currentPersonMessage").textContent=`You are adding as ${name}.`;$("#currentPersonMessage").classList.add("named");editingCardId=null;event.target.reset();closeModal("contributionModal");renderCards()});
   $("#episodeForm").addEventListener("submit",event=>{event.preventDefault();const number=Math.max(...episodes.map(ep=>ep.number),0)+1;const title=$("#newEpisodeTitle").value.trim();const description=$("#newEpisodeDescription").value.trim()||"Add the episode direction and build it together.";const ep={id:`ep-${Date.now()}`,number,title,shortTitle:title,description,status:"New episode",thesis:"Define the episode thesis together in the brain below.",needs:["Add content ideas.","Collect notes and questions.","Find primary sources and quotations."],segments:[]};episodes.push(ep);saveEpisodes();activeEpisodeId=ep.id;event.target.reset();closeModal("episodeModal");renderAll();showToast(`Episode ${number} added.`)});
