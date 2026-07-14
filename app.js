@@ -7,18 +7,17 @@ const initialEpisodes = [
     title: "Fulgentius of Ruspe and the Priority of Grace",
     shortTitle: "Fulgentius and Grace",
     description: "Faith, the beginning of good will, perseverance, and final glorification as gifts grounded in God’s antecedent grace and eternal purpose.",
-    status: "Script drafted",
-    thesis: "Fulgentius of Ruspe presents faith, the beginning of the good will, perseverance, and final glorification as gifts grounded in God’s antecedent grace and eternal purpose. He does so not as an isolated theologian but as spokesman for the institutional North African church — fifteen exiled bishops who endorsed his positions — and as a thinker who arrived at these conclusions through a documented conversion away from a broader construal of God’s saving will.",
-    needs: ["Keep the episode near 15 minutes.", "Use direct evidence before interpretation.", "Show the institutional weight of the fifteen bishops.", "Explain moral asymmetry: God gives grace but is not the author of evil.", "Make the Reformed connection carefully, without calling Fulgentius a proto-Calvinist."],
+    status: "IN PROGRESS: SLIDES & SCRIPT",
+    thesis: "Fulgentius presents faith, the beginning of the good will, perseverance, and final glorification as gifts grounded in God’s antecedent grace and eternal purpose.",
+    needs: ["Keep the episode between 10 and 12 minutes.", "Make a positive historical case before drawing confessional comparisons.", "Distinguish direct evidence from interpretation and verify every quotation.", "Use four principal texts rather than overloading the episode.", "Do not call Fulgentius a sixteenth-century Calvinist displaced in time.", "Handle contested translations and Proverbs 8:35 with precision."],
     segments: [
-      ["Hook — Who Said It?", "Open with the faith-as-gift quotation, then reveal the sixth-century African bishops.", "0:00–1:15"],
-      ["Context — Man, Exile, Conversion", "Biography, Vandal exile, episcopal authority, and his change on God’s saving will.", "1:15–3:30"],
-      ["Grace Begins", "Grace precedes, accompanies, and follows; Proverbs 8:35 in the African reception.", "3:30–5:30"],
-      ["Grace Vivifies", "The soul does not give itself faith; the Scythian connection and the bishops’ formulation.", "5:30–8:00"],
-      ["Grace Completes", "Perseverance and glorification within the unchangeable order of divine work.", "8:00–10:00"],
-      ["The Guardrail", "Moral asymmetry, concupiscence, just judgment, and God not authoring evil.", "10:00–12:00"],
-      ["The Exegetical Move", "Fulgentius on 1 Timothy 2:4 and the meaning of ‘all.’", "12:00–13:15"],
-      ["Synthesis", "Four conclusions, North African roots, and the bridge toward the Scythian monks.", "13:15–15:00"]
+      ["Hook", "A quotation that sounds post-Reformation, followed by the reveal: Fulgentius and fellow African bishops in exile.", "0:00–0:45"],
+      ["Context", "Identify Fulgentius, his North African setting, the dispute over the first movement of faith, and his ecclesial standing.", "0:45–2:00"],
+      ["Grace Begins", "Explain prevenient, concomitant, and subsequent grace using the Letter to Senator Theodore.", "2:00–4:00"],
+      ["Grace Vivifies", "Use the soul–body analogy: faith and every good willing depend upon vivifying grace.", "4:00–6:30"],
+      ["Grace Completes", "Connect illumination, perseverance, and glorification to predestination and God’s unchangeable purpose.", "6:30–9:00"],
+      ["Guardrail", "Show Fulgentius’ asymmetry: God grants righteousness; He is not the author of depravity.", "9:00–10:30"],
+      ["Synthesis", "State the precise historical conclusion and preview the Scythian monks.", "10:30–11:30"]
     ]
   },
   {id:"ep-2",number:2,title:"The Scythian Monks — Christology and the Grace Connection",shortTitle:"The Scythian Monks",description:"The men whose questions produced the letters: their Christology, doctrine of grace, and why they believed the two belonged together.",status:"Collecting ideas",thesis:"Define the episode thesis together in the brain below.",needs:["Identify the main figures.","Choose the central Christological formula.","Show the direct connection to grace.","Clarify the relationship with Fulgentius and Rome."],segments:[]},
@@ -29,29 +28,22 @@ const initialEpisodes = [
 ];
 
 const seedCards = [
-  {id:"c1",episodeId:"ep-1",kind:"idea",title:"Let the opening quotation breathe",body:"Put the quotation on screen with no attribution and pause before asking whether it sounds like Calvin, Westminster, or Dort.",name:"TRC",created:"Seed idea"},
-  {id:"c2",episodeId:"ep-1",kind:"idea",title:"Use the exile map early",body:"Show North Africa to Sardinia while explaining that Fulgentius became a spokesman for the exiled African bishops.",name:"Esther",created:"Seed idea"},
-  {id:"c3",episodeId:"ep-1",kind:"note",title:"Verify the conversion timeline",body:"We need the exact textual and scholarly support for the move from a broader saving will to the later restricted position.",name:"Esther",created:"Research note"},
-  {id:"c4",episodeId:"ep-1",kind:"note",title:"Do not overstate the Reformed bridge",body:"Say that these are Fulgentius’s own conclusions in his own setting. Avoid displaced-Calvinist language.",name:"Titus",created:"Editorial note"},
-  {id:"c5",episodeId:"ep-1",kind:"source",title:"Faith is a gift of grace",body:"“For man to believe is the work of grace alone, because faith itself is found among the gifts of grace.” — Letter 17 [2240], §47",name:"Sword",created:"Primary text"},
-  {id:"c6",episodeId:"ep-1",kind:"source",title:"Grace precedes, accompanies, and follows",body:"Letter to Senator Theodore [2235], §6, 12. Use for the main three-part structure of grace beginning, sustaining, and completing.",name:"Sword",created:"Primary text"},
-  {id:"c7",episodeId:"ep-2",kind:"idea",title:"Begin with the strange formula",body:"Open with “one of the Trinity suffered” and ask why monks debating Christology were also writing about grace.",name:"TRC",created:"Seed idea"},
-  {id:"c8",episodeId:"ep-1",kind:"idea",title:"Make the institutional witness visible",body:"Do not present Fulgentius as a solitary theologian. Put “Fulgentius + fourteen co-signing bishops” on screen and explain why the corporate witness matters.",name:"Sword",created:"Episode thesis"},
-  {id:"c9",episodeId:"ep-1",kind:"idea",title:"Build the episode around four gifts",body:"Use a recurring visual sequence: faith → beginning of good will → perseverance → final glorification. Return to it at the synthesis.",name:"Titus",created:"Structure idea"},
-  {id:"c10",episodeId:"ep-1",kind:"note",title:"Perseverance is not an appendix",body:"Final perseverance and glorification belong inside the same gracious purpose that grants faith. Do not treat them as later add-ons.",name:"Titus",created:"Argument note"},
-  {id:"c11",episodeId:"ep-1",kind:"note",title:"Preserve moral asymmetry",body:"Predestination to grace is mercy; condemnation is just judgment on the creature’s own corrupt desire. God is not the author of evil.",name:"Sword",created:"Guardrail"},
-  {id:"c12",episodeId:"ep-1",kind:"note",title:"Handle Proverbs 8:35 modestly",body:"Report how Fulgentius and his circle received and used the text. Do not turn this episode into a lexical defense of the rendering.",name:"Esther",created:"Editorial guardrail"},
-  {id:"c13",episodeId:"ep-1",kind:"note",title:"The lay-listener question",body:"Can the controversy be explained through one question: Why did you believe when another did not—and will the answer remain grace all the way to glory?",name:"TRC",created:"Audience note"},
-  {id:"c14",episodeId:"ep-1",kind:"source",title:"The soul does not give itself faith",body:"Letter 17 [2240], §47: use the body/soul analogy to explain why faith vivifies the soul but is not self-generated by it.",name:"Esther",created:"Primary text"},
-  {id:"c15",episodeId:"ep-1",kind:"source",title:"The unchangeable order of divine work",body:"Letter 17 [2240], §67: illumination, perseverance, and glorification follow the order established by God’s unchangeable will.",name:"Sword",created:"Primary text"},
-  {id:"c16",episodeId:"ep-1",kind:"source",title:"God does not work evil in the wicked",body:"To Monimus I.7.1 and I.XIII.2: pair both quotations so the asymmetry is stated in Fulgentius’s own words.",name:"Esther",created:"Primary text"},
-  {id:"c17",episodeId:"ep-1",kind:"source",title:"Maxwell on Christology and grace",body:"Use modern scholarship to connect Fulgentius’s Christological commitments with antecedent grace, while allowing the primary texts to carry the historical claim.",name:"Esther",created:"Secondary source"},
-  {id:"c18",episodeId:"ep-2",kind:"source",title:"Collect the Scythian dossier",body:"Create a source table with author, addressee, date, Christological formula, grace claim, and relationship to the African bishops.",name:"Esther",created:"Research task"},
-  {id:"c19",episodeId:"ep-3",kind:"note",title:"Orange: reception, not a magical endpoint",body:"Frame the council as ecclesial reception of a live controversy. Ask which questions it settled and which it deliberately left open.",name:"TRC",created:"Framing note"},
-  {id:"c20",episodeId:"ep-4",kind:"idea",title:"Show development without a straight line",body:"Compare Augustine and Fulgentius using shared grammar, new pressures, institutional context, and points of development rather than treating one as a photocopy of the other.",name:"Titus",created:"Episode angle"},
-  {id:"c21",episodeId:"ep-5",kind:"source",title:"Follow the line to Gottschalk",body:"Collect the passages where Gottschalk names or uses Fulgentius, then distinguish direct dependence from broader Augustinian inheritance.",name:"Sword",created:"Research lead"},
-  {id:"c22",episodeId:"ep-6",kind:"note",title:"No simplistic patristic-to-Reformed genealogy",body:"The final bridge should retrieve shared theological grammar while naming real differences in context, vocabulary, ecclesiology, and confessional development.",name:"Titus",created:"Series guardrail"},
-  {id:"c23",episodeId:"ep-6",kind:"idea",title:"End with a responsible retrieval checklist",body:"Give listeners four questions for using the Fathers well: What did the source say? In what controversy? With what institutional weight? What can and cannot be carried forward?",name:"TRC",created:"Finale idea"}
+  {id:"c1",episodeId:"ep-1",kind:"idea",title:"Opening hook: recognition before reveal",body:"Open with a quotation that sounds post-Reformation, then reveal that it came from Fulgentius and fellow African bishops in exile. Include one restrained “Who said it?” interruption.",name:"Episode 1 Production Notes",created:"Meeting notes"},
+  {id:"c2",episodeId:"ep-1",kind:"idea",title:"Use restrained historical visuals",body:"Use dates, locations, and relationships as restrained visual anchors. Put exact quotations and sources on screen and highlight only the clause being narrated.",name:"Episode 1 Production Notes",created:"Visual direction"},
+  {id:"c3",episodeId:"ep-1",kind:"idea",title:"Use a second narrator strategically",body:"Use a second narrator for one quotation or transition to reset attention without changing the sober tone.",name:"Episode 1 Production Notes",created:"Production direction"},
+  {id:"c4",episodeId:"ep-1",kind:"note",title:"Make the positive historical case first",body:"Establish Fulgentius as a serious sixth-century witness before drawing confessional comparisons. Do not imply that a finished later Reformed system existed in the sixth century.",name:"Episode 1 Production Notes",created:"Editorial position"},
+  {id:"c5",episodeId:"ep-1",kind:"note",title:"Limit the final cut to four principal texts",body:"Do not overload the episode with every available quotation. Four principal texts are enough for the 10–12 minute target.",name:"Episode 1 Production Notes",created:"Editorial limit"},
+  {id:"c6",episodeId:"ep-1",kind:"note",title:"Preserve the moral asymmetry",body:"Fulgentius denies that predestination coerces the wicked or makes God the author of evil. God grants righteousness; depravity arises through withdrawal from God.",name:"Episode 1 Production Notes",created:"Doctrinal guardrail"},
+  {id:"c7",episodeId:"ep-1",kind:"note",title:"Handle Proverbs 8:35 with precision",body:"Report how Fulgentius, Augustine, and the Scythian monks received and used “the will is prepared by the Lord.” Do not present a complete lexical defense without independent checking.",name:"Episode 1 Production Notes",created:"Verification note"},
+  {id:"c8",episodeId:"ep-1",kind:"note",title:"Pre-publication verification list",body:"Verify every quotation against the cited English edition; standardize Fulgentius/Fulgence; confirm To Monimus dates and divisions; check Pope Symmachus details; verify Proverbs 8:35 provenance; add a consistent final bibliography.",name:"Episode 1 Production Notes",created:"Verification list"},
+  {id:"c9",episodeId:"ep-1",kind:"source",title:"Threefold grace",body:"Letter to Senator Theodore 2235 [6, 12] — use to define prevenient, concomitant, and subsequent grace: beginning, continuation, and consummation.",name:"Episode 1 Production Notes",created:"Primary text"},
+  {id:"c10",episodeId:"ep-1",kind:"source",title:"Faith and good willing as vivifying grace",body:"Letter of Fulgence and Fourteen Other African Bishops Exiled in Sardinia 2240 [17, 47] — principal proof text for faith as gift, grace alone, and the renewed will’s continuing dependence.",name:"Episode 1 Production Notes",created:"Primary text"},
+  {id:"c11",episodeId:"ep-1",kind:"source",title:"Perseverance and glorification",body:"Letter 2240 [17, 67] — illumination, perseverance, and glorification grounded in predestination and God’s unchangeable purpose.",name:"Episode 1 Production Notes",created:"Primary text"},
+  {id:"c12",episodeId:"ep-1",kind:"source",title:"Predestination, mercy, and judgment",body:"To Monimus [1, 7, 1] — use for predestination, gratuitous mercy, due judgment, and the denial that God authors evil.",name:"Episode 1 Production Notes",created:"Primary text"},
+  {id:"c13",episodeId:"ep-1",kind:"source",title:"Reserve text on divine authorship",body:"To Monimus [1, 25, 4] clarifies the asymmetry between the gift of righteousness and judgment of sin. Reserve it unless the final cut has enough time.",name:"Episode 1 Production Notes",created:"Reserve source"},
+  {id:"c14",episodeId:"ep-2",kind:"idea",title:"Next episode bridge: the Scythian monks",body:"Turn next to the Scythian monks, their reading of “the will is prepared by the Lord,” and the relationship between their Christology and soteriology.",name:"Episode 1 Production Notes",created:"Documented bridge"},
+  {id:"c15",episodeId:"ep-1",kind:"note",title:"NEED: start working on the thumbnail",body:"Needs ideas and vibes for the thumbnail.",name:"Esther",created:"Jul 14"},
+  {id:"c16",episodeId:"ep-1",kind:"note",title:"NEED: finish the slides & script 7/14/26",body:"Work together with Sword to finalize the slides today and the script.",name:"Esther",created:"Jul 14"}
 ];
 
 const storedEpisodes = JSON.parse(localStorage.getItem("ctEpisodes") || "null");
@@ -59,12 +51,21 @@ const storedCards = JSON.parse(localStorage.getItem("ctCards") || "null");
 const storedFiles = JSON.parse(localStorage.getItem("ctFiles") || "null");
 let episodes = storedEpisodes || initialEpisodes;
 let files = storedFiles || [];
-const contentVersion = 2;
+const contentVersion = 3;
 const storedContentVersion = Number(localStorage.getItem("ctContentVersion") || 0);
 let cards = storedCards || seedCards;
 if (storedCards && storedContentVersion < contentVersion) {
-  cards = [...storedCards, ...seedCards.filter(seed=>!storedCards.some(card=>card.id===seed.id))];
+  const userCards = storedCards.filter(card=>!/^c\d+$/.test(card.id));
+  cards = [...userCards, ...seedCards.filter(seed=>!userCards.some(card=>card.episodeId===seed.episodeId&&card.title.trim().toLowerCase()===seed.title.trim().toLowerCase()))];
   localStorage.setItem("ctCards", JSON.stringify(cards));
+  const episodeOne = episodes.find(episode=>episode.id==="ep-1");
+  if (episodeOne) {
+    episodeOne.description = initialEpisodes[0].description;
+    episodeOne.thesis = initialEpisodes[0].thesis;
+    episodeOne.needs = initialEpisodes[0].needs;
+    episodeOne.segments = initialEpisodes[0].segments;
+    localStorage.setItem("ctEpisodes", JSON.stringify(episodes));
+  }
 }
 localStorage.setItem("ctContentVersion", String(contentVersion));
 let activeEpisodeId = localStorage.getItem("ctActiveEpisode") || episodes[0].id;

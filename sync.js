@@ -34,12 +34,23 @@ export async function startSync(seedData, onData, onStatus) {
 
     firestore.onSnapshot(workspaceReference, { includeMetadataChanges: true }, async snapshot => {
       if (!snapshot.exists()) {
-        await saveWorkspace(seedData);
+        try {
+          await saveWorkspace(seedData);
+        } catch (error) {
+          console.error("Initial workspace save failed", error);
+          onStatus("error", "Saved locally — shared sync failed");
+        }
         return;
       }
 
       const data = snapshot.data();
-      if (Array.isArray(data.episodes) && Array.isArray(data.cards)) {
+      if (typeof data.episodesJson === "string" && typeof data.cardsJson === "string") {
+        onData({
+          episodes: JSON.parse(data.episodesJson),
+          cards: JSON.parse(data.cardsJson),
+          files: typeof data.filesJson === "string" ? JSON.parse(data.filesJson) : []
+        });
+      } else if (Array.isArray(data.episodes) && Array.isArray(data.cards)) {
         onData({ episodes: data.episodes, cards: data.cards, files: Array.isArray(data.files) ? data.files : [] });
       }
       onStatus(snapshot.metadata.fromCache ? "offline" : "synced", snapshot.metadata.fromCache ? "Offline — changes queued" : "Synced across browsers");
@@ -59,9 +70,9 @@ export async function startSync(seedData, onData, onStatus) {
 export async function saveWorkspace(data) {
   if (!workspaceReference || !writeWorkspace) return false;
   await writeWorkspace(workspaceReference, {
-    episodes: data.episodes,
-    cards: data.cards,
-    files: data.files || [],
+    episodesJson: JSON.stringify(data.episodes),
+    cardsJson: JSON.stringify(data.cards),
+    filesJson: JSON.stringify(data.files || []),
     updatedAt: serverTime()
   }, { merge: true });
   return true;
