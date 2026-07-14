@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Contra Tenebras shared episode workspace." />
+  <title>Contra Tenebras — Episode Brain</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Libre+Caslon+Text:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#">
+        <span class="brand-mark"><i>✦</i><b>CT</b></span>
+        <span><strong>Contra Tenebras</strong><small>Shared episode brain</small></span>
+      </a>
+      <div class="person-box">
+        <span class="sync-status local" id="syncStatus"><i></i> Saved locally</span>
+        <label for="personName">Your name</label>
+        <input id="personName" placeholder="Type your name…" autocomplete="name" />
+        <button id="saveName">Use this name</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="intro">
+      <div class="intro-copy">
+        <span class="kicker">Behind the channel</span>
+        <h1>Build each episode together.</h1>
+        <p>Pick an episode, then drop in content ideas, research notes, questions, quotations, and sources. Type your name once so everyone knows who added what.</p>
+      </div>
+      <div class="intro-emblem" aria-hidden="true"><span>CONTRA</span><b>✦</b><span>TENEBRAS</span></div>
+      <div class="current-person" id="currentPersonMessage">You are adding anonymously. Type your name above.</div>
+    </section>
+
+    <section class="workspace">
+      <aside class="episode-sidebar">
+        <div class="sidebar-heading">
+          <div><span class="kicker">Season one</span><h2>Episodes</h2></div>
+          <button class="small-button" id="openEpisodeForm">＋ Add</button>
+        </div>
+        <div class="episode-list" id="episodeList"></div>
+      </aside>
+
+      <section class="episode-workspace">
+        <div class="episode-header" id="episodeHeader"></div>
+
+        <nav class="episode-tabs" aria-label="Episode sections">
+          <button class="active" data-tab="brain">Episode brain</button>
+          <button data-tab="plan">Episode plan</button>
+          <button data-tab="about">Thesis & direction</button>
+        </nav>
+
+        <div class="tab-panel active" id="brainPanel">
+          <div class="add-strip">
+            <div>
+              <strong>Add something to this episode</strong>
+              <span>An idea can be rough. The team can shape it later.</span>
+            </div>
+            <button class="primary-button" id="openContributionForm">＋ Add to episode</button>
+          </div>
+
+          <div class="brain-columns">
+            <section class="brain-section ideas-section">
+              <div class="brain-heading">
+                <span class="section-icon">✦</span>
+                <div><h3>Content ideas</h3><p>Angles, hooks, explanations, visuals, transitions</p></div>
+                <b id="ideasCount">0</b>
+              </div>
+              <div class="card-list" id="ideasList"></div>
+              <button class="add-inline" data-kind="idea">＋ Add content idea</button>
+            </section>
+
+            <section class="brain-section notes-section">
+              <div class="brain-heading">
+                <span class="section-icon">≡</span>
+                <div><h3>Notes & questions</h3><p>Research notes, concerns, things to check</p></div>
+                <b id="notesCount">0</b>
+              </div>
+              <div class="card-list" id="notesList"></div>
+              <button class="add-inline" data-kind="note">＋ Add note or question</button>
+            </section>
+
+            <section class="brain-section sources-section">
+              <div class="brain-heading">
+                <span class="section-icon">“</span>
+                <div><h3>Quotes & sources</h3><p>Primary texts, scholarship, links, citations</p></div>
+                <b id="sourcesCount">0</b>
+              </div>
+              <div class="card-list" id="sourcesList"></div>
+              <button class="add-inline" data-kind="source">＋ Add quote or source</button>
+            </section>
+          </div>
+        </div>
+
+        <div class="tab-panel" id="planPanel">
+          <div class="plan-intro">
+            <div><span class="kicker">Running order</span><h2>Episode plan</h2></div>
+            <p>This is the simple episode structure. Use the brain cards to suggest changes or additions.</p>
+          </div>
+          <div class="segment-list" id="segmentList"></div>
+        </div>
+
+        <div class="tab-panel" id="aboutPanel">
+          <div class="about-grid">
+            <article class="thesis-card"><span class="kicker">Working thesis</span><blockquote id="episodeThesis"></blockquote></article>
+            <article class="direction-card"><span class="kicker">What this episode needs</span><ul id="episodeNeeds"></ul></article>
+          </div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <div class="modal" id="contributionModal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="contributionTitle">
+      <button class="close-button" data-close="contributionModal">×</button>
+      <span class="kicker" id="modalEpisodeLabel">Episode 1</span>
+      <h2 id="contributionTitle">Add to the episode brain</h2>
+      <form id="contributionForm">
+        <fieldset class="kind-options">
+          <legend>What are you adding?</legend>
+          <label><input type="radio" name="kind" value="idea" checked><span>Content idea</span></label>
+          <label><input type="radio" name="kind" value="note"><span>Note / question</span></label>
+          <label><input type="radio" name="kind" value="source"><span>Quote / source</span></label>
+        </fieldset>
+        <label class="field"><span>Short title</span><input id="contributionTitleInput" required placeholder="Example: Open with the exile map" /></label>
+        <label class="field"><span>What do you want to add?</span><textarea id="contributionBody" required rows="6" placeholder="Write the idea, note, question, quotation, source, or link here…"></textarea></label>
+        <label class="field"><span>Your name</span><input id="contributionName" required placeholder="Who is adding this?" /></label>
+        <div class="modal-actions"><button type="button" class="secondary-button" data-close="contributionModal">Cancel</button><button type="submit" class="primary-button">Add it</button></div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal" id="episodeModal" aria-hidden="true">
+    <div class="modal-card small-modal" role="dialog" aria-modal="true" aria-labelledby="episodeFormTitle">
+      <button class="close-button" data-close="episodeModal">×</button>
+      <span class="kicker">Season planning</span><h2 id="episodeFormTitle">Add an episode</h2>
+      <form id="episodeForm">
+        <label class="field"><span>Episode title</span><input id="newEpisodeTitle" required placeholder="What is the episode about?" /></label>
+        <label class="field"><span>Short description</span><textarea id="newEpisodeDescription" rows="4" placeholder="A simple one-sentence direction…"></textarea></label>
+        <div class="modal-actions"><button type="button" class="secondary-button" data-close="episodeModal">Cancel</button><button type="submit" class="primary-button">Add episode</button></div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal" id="editEpisodeModal" aria-hidden="true">
+    <div class="modal-card edit-episode-modal" role="dialog" aria-modal="true" aria-labelledby="editEpisodeTitle">
+      <button class="close-button" data-close="editEpisodeModal">×</button>
+      <span class="kicker">Episode editor</span><h2 id="editEpisodeTitle">Edit episode</h2>
+      <form id="editEpisodeForm">
+        <div class="two-fields">
+          <label class="field"><span>Episode title</span><input id="editEpisodeName" required /></label>
+          <label class="field"><span>Short sidebar title</span><input id="editEpisodeShortName" required /></label>
+        </div>
+        <label class="field"><span>Description</span><textarea id="editEpisodeDescription" rows="3"></textarea></label>
+        <label class="field"><span>Status</span><input id="editEpisodeStatus" placeholder="Collecting ideas" /></label>
+        <label class="field"><span>Working thesis</span><textarea id="editEpisodeThesis" rows="6"></textarea></label>
+        <label class="field"><span>What this episode needs — one item per line</span><textarea id="editEpisodeNeeds" rows="5"></textarea></label>
+        <label class="field"><span>Episode plan — one segment per line: Title | Description | Time</span><textarea id="editEpisodeSegments" rows="8" placeholder="Hook | Open with the central quotation | 0:00–1:15"></textarea></label>
+        <div class="modal-actions"><button type="button" class="secondary-button" data-close="editEpisodeModal">Cancel</button><button type="submit" class="primary-button">Save episode</button></div>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">Added to the episode.</div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
