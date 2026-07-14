@@ -53,6 +53,7 @@
           <button class="active" data-tab="brain">Episode brain</button>
           <button data-tab="plan">Episode plan</button>
           <button data-tab="about">Thesis & direction</button>
+          <button data-tab="production">Production</button>
           <button data-tab="files">Files</button>
         </nav>
 
@@ -111,6 +112,37 @@
             <article class="thesis-card"><span class="kicker">Working thesis</span><blockquote id="episodeThesis"></blockquote></article>
             <article class="direction-card"><span class="kicker">What this episode needs</span><ul id="episodeNeeds"></ul></article>
           </div>
+        </div>
+
+        <div class="tab-panel" id="productionPanel">
+          <section class="production-hero">
+            <div class="production-hero-copy">
+              <span class="production-eyebrow">Episode launch readiness</span>
+              <div class="production-score-line"><strong id="productionPercent">0%</strong><span id="productionMessage">Let’s get this episode moving.</span></div>
+              <div class="production-progress" role="progressbar" aria-label="Episode production progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="productionProgress">
+                <span id="productionBar"></span>
+              </div>
+              <p id="productionCompleted">0 of 0 launch tasks complete</p>
+            </div>
+            <div class="launch-seal" id="launchSeal"><span>✦</span><strong>BUILDING</strong><small>toward launch</small></div>
+          </section>
+
+          <div class="production-intro">
+            <div><span class="kicker">From research to release</span><h2>Production command center</h2></div>
+            <p>Check off the full path to publication, assign owners, set deadlines, and add episode-specific tasks. Everything syncs with the shared workspace.</p>
+          </div>
+
+          <div class="production-phases" id="productionTasks"></div>
+
+          <form class="task-add-form" id="taskAddForm">
+            <div class="task-add-heading"><span>＋</span><div><strong>Add a custom task</strong><small>Add anything unique this episode needs before launch.</small></div></div>
+            <label><span>Phase</span><select id="taskPhase"><option>Research & script</option><option>Visuals & assets</option><option>Recording & edit</option><option>Release & promotion</option></select></label>
+            <label class="task-title-field"><span>Task</span><input id="taskTitle" required placeholder="Example: Ask guest to approve final clip" /></label>
+            <label><span>Assign to</span><input id="taskAssignee" list="teamNames" placeholder="Optional" /></label>
+            <label><span>Due date</span><input id="taskDue" type="date" /></label>
+            <button class="primary-button" type="submit">Add task</button>
+          </form>
+          <datalist id="teamNames"></datalist>
         </div>
 
         <div class="tab-panel" id="filesPanel">

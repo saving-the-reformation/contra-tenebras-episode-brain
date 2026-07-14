@@ -123,6 +123,77 @@ function renderAbout(){
   const ep=activeEpisode();$("#episodeThesis").textContent=ep.thesis;$("#episodeNeeds").innerHTML=ep.needs.map(need=>`<li>${clean(need)}</li>`).join("");
 }
 
+const productionPhases=["Research & script","Visuals & assets","Recording & edit","Release & promotion"];
+const defaultProductionTasks=[
+  ["research-thesis","Research & script","Lock the episode thesis and central argument"],
+  ["research-script","Research & script","Complete the full script or speaking outline"],
+  ["research-quotes","Research & script","Verify every primary-source quotation"],
+  ["research-citations","Research & script","Complete citations, bibliography, and source links"],
+  ["research-review","Research & script","Finish theological and historical accuracy review"],
+  ["visual-slides","Visuals & assets","Finish slides, quotations, maps, and visual inserts"],
+  ["visual-rights","Visuals & assets","Confirm image permissions and attribution"],
+  ["visual-thumbnail","Visuals & assets","Approve the final thumbnail"],
+  ["visual-brand","Visuals & assets","Check logo, fonts, colors, and visual consistency"],
+  ["production-record","Recording & edit","Record the final narration and host segments"],
+  ["production-audio","Recording & edit","Clean audio and balance music levels"],
+  ["production-video","Recording & edit","Complete the final video edit"],
+  ["production-captions","Recording & edit","Review captions, names, Latin, and technical terms"],
+  ["production-watch","Recording & edit","Complete a full-team final watch-through"],
+  ["release-title","Release & promotion","Approve the public title and description"],
+  ["release-details","Release & promotion","Add chapters, links, credits, and bibliography"],
+  ["release-youtube","Release & promotion","Add end screen, cards, playlist, and thumbnail"],
+  ["release-upload","Release & promotion","Upload, process, and schedule the final video"],
+  ["release-promo","Release & promotion","Prepare announcement and social posts"],
+  ["release-live","Release & promotion","Publish the episode and verify the live page"]
+].map(([id,phase,title])=>({id:`task-${id}`,phase,title,done:false,assignee:"",due:"",custom:false}));
+
+function ensureProductionTasks(ep){
+  const existing=Array.isArray(ep.productionTasks)?ep.productionTasks:[];
+  const existingIds=new Set(existing.map(task=>task.id));
+  ep.productionTasks=[...existing,...defaultProductionTasks.filter(task=>!existingIds.has(task.id)).map(task=>({...task}))];
+  return ep.productionTasks;
+}
+
+function renderProduction(){
+  const ep=activeEpisode();
+  const tasks=ensureProductionTasks(ep);
+  const completed=tasks.filter(task=>task.done).length;
+  const percent=tasks.length?Math.round(completed/tasks.length*100):0;
+  const message=percent===100?"Ready to publish. Bring it into the light.":percent>=80?"Final push — the finish line is in sight.":percent>=50?"More than halfway. Keep cooking.":percent>=25?"Momentum is building. Keep the team moving.":"Every checked box moves the episode toward launch.";
+  $("#productionPercent").textContent=`${percent}%`;
+  $("#productionMessage").textContent=message;
+  $("#productionCompleted").textContent=`${completed} of ${tasks.length} launch tasks complete`;
+  $("#productionBar").style.width=`${percent}%`;
+  $("#productionProgress").setAttribute("aria-valuenow",String(percent));
+  const seal=$("#launchSeal");
+  seal.classList.toggle("ready",percent===100);
+  seal.innerHTML=percent===100?"<span>✓</span><strong>READY</strong><small>publish the episode</small>":`<span>✦</span><strong>${percent>=50?"COOKING":"BUILDING"}</strong><small>toward launch</small>`;
+
+  $("#productionTasks").innerHTML=productionPhases.map((phase,index)=>{
+    const phaseTasks=tasks.filter(task=>task.phase===phase);
+    const phaseDone=phaseTasks.filter(task=>task.done).length;
+    const rows=phaseTasks.map(task=>{
+      const overdue=task.due&&!task.done&&new Date(`${task.due}T23:59:59`)<new Date();
+      return `<div class="production-task ${task.done?"complete":""} ${overdue?"overdue":""}">
+        <label class="task-check"><input type="checkbox" data-task-check="${task.id}" ${task.done?"checked":""}><span>✓</span></label>
+        <div class="task-main"><strong>${clean(task.title)}</strong><small>${task.done?`Completed${task.completedBy?` by ${clean(task.completedBy)}`:""}`:overdue?"Deadline passed — needs attention":"Ready to assign and complete"}</small></div>
+        <label class="task-owner"><span>Owner</span><input data-task-owner="${task.id}" list="teamNames" value="${clean(task.assignee||"")}" placeholder="Unassigned"></label>
+        <label class="task-date"><span>Due</span><input data-task-due="${task.id}" type="date" value="${clean(task.due||"")}"></label>
+        ${task.custom?`<button class="task-delete" data-task-delete="${task.id}" title="Delete custom task">×</button>`:""}
+      </div>`;
+    }).join("");
+    return `<section class="production-phase phase-${index+1}"><header><div><span>0${index+1}</span><div><h3>${phase}</h3><p>${phaseDone} of ${phaseTasks.length} complete</p></div></div><strong>${phaseTasks.length?Math.round(phaseDone/phaseTasks.length*100):0}%</strong></header><div class="phase-meter"><span style="width:${phaseTasks.length?phaseDone/phaseTasks.length*100:0}%"></span></div><div class="production-task-list">${rows}</div></section>`;
+  }).join("");
+
+  const names=new Set([localStorage.getItem("ctPerson"),...cards.map(card=>card.name),...tasks.map(task=>task.assignee)].filter(Boolean));
+  $("#teamNames").innerHTML=[...names].sort().map(name=>`<option value="${clean(name)}"></option>`).join("");
+
+  $$('[data-task-check]').forEach(input=>input.addEventListener("change",()=>{const task=tasks.find(item=>item.id===input.dataset.taskCheck);task.done=input.checked;task.completedAt=input.checked?new Date().toISOString():"";task.completedBy=input.checked?(localStorage.getItem("ctPerson")||task.assignee||"Team"):"";persistWorkspace();renderProduction();showToast(input.checked?"Task complete — progress updated.":"Task reopened.")}));
+  $$('[data-task-owner]').forEach(input=>input.addEventListener("change",()=>{const task=tasks.find(item=>item.id===input.dataset.taskOwner);task.assignee=input.value.trim();persistWorkspace();renderProduction();showToast(task.assignee?`Assigned to ${task.assignee}.`:"Task unassigned.")}));
+  $$('[data-task-due]').forEach(input=>input.addEventListener("change",()=>{const task=tasks.find(item=>item.id===input.dataset.taskDue);task.due=input.value;persistWorkspace();renderProduction();showToast(task.due?"Deadline saved.":"Deadline removed.")}));
+  $$('[data-task-delete]').forEach(button=>button.addEventListener("click",()=>{const task=tasks.find(item=>item.id===button.dataset.taskDelete);if(!task||!confirm(`Delete the task “${task.title}”?`))return;ep.productionTasks=tasks.filter(item=>item.id!==task.id);persistWorkspace();renderProduction();showToast("Custom task deleted.")}));
+}
+
 const materialCategories=["Scripts & outlines","Slides & graphics","Research & sources","Audio & video","Other links"];
 function normalizeUrl(value){const trimmed=value.trim();return /^https?:\/\//i.test(trimmed)?trimmed:`https://${trimmed}`}
 function renderFiles(){const episodeLinks=files.filter(item=>item.episodeId===activeEpisodeId);$("#episodeFiles").innerHTML=materialCategories.map((category,index)=>{const categoryLinks=episodeLinks.filter(item=>(item.category||"Other links")===category).sort((a,b)=>new Date(b.addedAt||b.uploadedAt)-new Date(a.addedAt||a.uploadedAt));return `<section class="material-group"><header><span class="material-group-icon">${["S","P","R","A","+"][index]}</span><div><h3>${category}</h3><p>${["Working scripts, outlines, and drafts","Slide decks, thumbnails, and visual references","Articles, books, PDFs, and source collections","Recordings, music, clips, and video references","Anything that does not fit another section"][index]}</p></div><b>${categoryLinks.length}</b></header><div class="material-links">${categoryLinks.length?categoryLinks.map(link=>`<article class="material-link"><div><a href="${clean(link.url)}" target="_blank" rel="noopener">${clean(link.name)}</a><p>Added by ${clean(link.nameAddedBy||"Team")} · ${new Date(link.addedAt||link.uploadedAt).toLocaleDateString()}</p></div><div class="material-actions"><button data-edit-material="${link.id}">Edit</button><a href="${clean(link.url)}" target="_blank" rel="noopener">Open ↗</a><button data-delete-material="${link.id}">Delete</button></div></article>`).join(""):`<div class="material-empty">No links in this section yet.</div>`}</div></section>`}).join("");$$('[data-delete-material]').forEach(button=>button.addEventListener("click",()=>{const item=files.find(link=>link.id===button.dataset.deleteMaterial);if(!item||!confirm(`Delete the link “${item.name}”?`))return;files=files.filter(link=>link.id!==item.id);persistWorkspace();renderFiles();showToast("Link deleted.")}));$$('[data-edit-material]').forEach(button=>button.addEventListener("click",()=>{const item=files.find(link=>link.id===button.dataset.editMaterial);if(!item)return;editingMaterialId=item.id;$("#materialCategory").value=item.category||"Other links";$("#materialName").value=item.name;$("#materialUrl").value=item.url;$("#materialSubmitButton").textContent="Save link";$("#materialName").focus()}))}
@@ -132,7 +203,7 @@ function renderTabs(){
   $$(".tab-panel").forEach(panel=>panel.classList.remove("active"));$("#"+activeTab+"Panel").classList.add("active");
 }
 
-function renderAll(){renderEpisodes();renderHeader();renderCards();renderPlan();renderAbout();renderFiles();renderTabs()}
+function renderAll(){renderEpisodes();renderHeader();renderCards();renderPlan();renderAbout();renderProduction();renderFiles();renderTabs()}
 function persistWorkspace(){localStorage.setItem("ctCards",JSON.stringify(cards));localStorage.setItem("ctEpisodes",JSON.stringify(episodes));localStorage.setItem("ctFiles",JSON.stringify(files));saveWorkspace({episodes,cards,files}).catch(error=>console.error("Remote save failed",error))}
 function saveCards(){persistWorkspace()}
 function saveEpisodes(){persistWorkspace()}
@@ -151,6 +222,7 @@ document.addEventListener("DOMContentLoaded",()=>{
   $$(".episode-tabs button").forEach(button=>button.addEventListener("click",()=>{activeTab=button.dataset.tab;renderTabs()}));
   $("#openContributionForm").addEventListener("click",()=>{editingCardId=null;$("#contributionForm").reset();openModal("contributionModal")});$$(".add-inline").forEach(button=>button.addEventListener("click",()=>{editingCardId=null;$("#contributionForm").reset();openModal("contributionModal",button.dataset.kind)}));
   $("#openEpisodeForm").addEventListener("click",()=>openModal("episodeModal"));
+  $("#taskAddForm").addEventListener("submit",event=>{event.preventDefault();const ep=activeEpisode();const tasks=ensureProductionTasks(ep);const title=$("#taskTitle").value.trim();tasks.push({id:`task-custom-${Date.now()}`,phase:$("#taskPhase").value,title,done:false,assignee:$("#taskAssignee").value.trim(),due:$("#taskDue").value,custom:true,addedAt:new Date().toISOString()});event.target.reset();persistWorkspace();renderProduction();showToast("Custom production task added.")});
   $("#materialLinkForm").addEventListener("submit",event=>{event.preventDefault();const person=localStorage.getItem("ctPerson")||$("#personName").value.trim();if(!person){showToast("Type and save your name before adding a link.");return}let url;try{url=new URL(normalizeUrl($("#materialUrl").value)).href}catch{showToast("Please enter a valid web link.");return}const values={episodeId:activeEpisodeId,category:$("#materialCategory").value,name:$("#materialName").value.trim(),url,nameAddedBy:person,addedAt:new Date().toISOString()};if(editingMaterialId){Object.assign(files.find(item=>item.id===editingMaterialId),values);showToast("Link updated.")}else{files.unshift({id:`link-${Date.now()}`,...values});showToast("Link added to this episode.")}editingMaterialId=null;event.target.reset();$("#materialSubmitButton").textContent="＋ Add link";persistWorkspace();renderFiles()});
   $$('[data-close]').forEach(button=>button.addEventListener("click",()=>closeModal(button.dataset.close)));$$('.modal').forEach(modal=>modal.addEventListener("click",event=>{if(event.target===modal)closeModal(modal.id)}));
   $("#contributionForm").addEventListener("submit",event=>{event.preventDefault();const name=$("#contributionName").value.trim();const values={kind:$("input[name='kind']:checked").value,title:$("#contributionTitleInput").value.trim(),body:$("#contributionBody").value.trim(),name};if(editingCardId){const card=cards.find(item=>item.id===editingCardId);Object.assign(card,values);showToast("Contribution updated.")}else{cards.unshift({id:`card-${Date.now()}`,episodeId:activeEpisodeId,...values,created:new Date().toLocaleDateString(undefined,{month:"short",day:"numeric"}),addedAt:new Date().toISOString()});showToast("Added to this episode.")}saveCards();localStorage.setItem("ctPerson",name);$("#personName").value=name;$("#currentPersonMessage").textContent=`You are adding as ${name}.`;$("#currentPersonMessage").classList.add("named");editingCardId=null;event.target.reset();closeModal("contributionModal");renderCards()});

@@ -18,7 +18,10 @@ Then visit `http://localhost:4173`.
 - A separate working space for every episode
 - Content ideas, notes/questions, and quotes/sources
 - A typed contributor name attached to every addition
-- The real Episode 1 thesis and eight-segment outline
+- The real Episode 1 thesis and seven-segment outline
+- A full production-to-publish checklist for every episode
+- Live progress bars, task owners, deadlines, and custom tasks
+- Organized links for scripts, slides, research, audio, and video
 - Easy creation of additional episodes
 - Responsive desktop and mobile layouts
 
@@ -36,4 +39,4 @@ To enable shared live saving:
 4. Copy the Web app configuration values into `firebase-config.js`.
 5. Publish the included `firestore.rules` in the Firebase console.
 
-Once configured, all episodes, plans, ideas, notes, quotes, and progress sync through the shared `contra-tenebras` workspace. Firestore’s persistent browser cache also queues changes while temporarily offline.
+Once configured, all episodes, plans, ideas, notes, quotes, production tasks, assignments, deadlines, links, and progress sync through the shared `contra-tenebras` workspace. Firestore’s persistent browser cache also queues changes while temporarily offline.
