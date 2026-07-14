@@ -115,12 +115,15 @@
 
         <div class="tab-panel" id="filesPanel">
           <div class="files-header">
-            <div><span class="kicker">Episode materials</span><h2>Scripts, slides & research files</h2><p>Keep the working documents for this episode together and available to the whole team.</p></div>
-            <label class="file-picker"><input id="episodeFileInput" type="file" accept=".doc,.docx,.pdf,.ppt,.pptx,.xls,.xlsx,.txt,.md,.png,.jpg,.jpeg,.webp,.mp3,.wav,.mp4"><span>＋ Choose file</span></label>
+            <div><span class="kicker">Episode links</span><h2>Scripts, slides & research materials</h2><p>Name and organize links to documents stored in Google Drive, Dropbox, YouTube, or another shared service.</p></div>
           </div>
-          <div class="upload-notice" id="uploadNotice"><strong>Shared file storage</strong><span>Select a file up to 50 MB. Scripts, outlines, slides, PDFs, images, audio, and video are supported.</span></div>
-          <div class="upload-progress" id="uploadProgress" hidden><i></i><span>Preparing upload…</span></div>
-          <div class="episode-files" id="episodeFiles"></div>
+          <form class="material-link-form" id="materialLinkForm">
+            <label><span>Section</span><select id="materialCategory"><option>Scripts & outlines</option><option>Slides & graphics</option><option>Research & sources</option><option>Audio & video</option><option>Other links</option></select></label>
+            <label><span>Link name</span><input id="materialName" required placeholder="Episode 1 working script" /></label>
+            <label class="url-field"><span>Paste link</span><input id="materialUrl" type="text" required placeholder="https://drive.google.com/…" /></label>
+            <button class="primary-button" type="submit" id="materialSubmitButton">＋ Add link</button>
+          </form>
+          <div class="material-sections" id="episodeFiles"></div>
         </div>
       </section>
     </section>

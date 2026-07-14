@@ -149,16 +149,6 @@ Later updates use the same deploy command.
 - Use Cloud Firestore for the shared content database.
 - Consider Google sign-in with a team allowlist before sharing the link widely.
 
-# Enable episode file uploads
+# Episode material links
 
-The website includes a **Files** tab inside every episode for scripts, outlines, slides, PDFs, images, audio, and video files up to 50 MB.
-
-1. In Firebase, open **Build → Storage**.
-2. Click **Get started**.
-3. Choose the same location as the Firestore database when possible.
-4. Finish creating the default Storage bucket.
-5. Open the Storage **Rules** tab.
-6. Replace the rules with the contents of `storage.rules`.
-7. Click **Publish**.
-
-Depending on current Firebase plan requirements, Google may ask the project owner to enable billing before Cloud Storage can be used. Episode editing and text synchronization continue to work even when Storage is not enabled.
+The **Files** tab stores named links to scripts, outlines, slides, research sources, audio, video, and other materials. Documents can remain in Google Drive, Dropbox, YouTube, or another service. Only the small link records synchronize through Firestore, so Firebase Cloud Storage and a billing upgrade are not required.
