@@ -54,6 +54,7 @@
           <button data-tab="plan">Episode plan</button>
           <button data-tab="about">Thesis & direction</button>
           <button data-tab="production">Production</button>
+          <button data-tab="gameplan">Channel gameplan</button>
           <button data-tab="files">Files</button>
         </nav>
 
@@ -143,6 +144,48 @@
             <button class="primary-button" type="submit">Add task</button>
           </form>
           <datalist id="teamNames"></datalist>
+        </div>
+
+        <div class="tab-panel" id="gameplanPanel">
+          <section class="gameplan-hero">
+            <div><span class="gameplan-overline">Saving the Reformation</span><h2>A source-driven channel built for durable theological work.</h2><p>Preserve the original creative energy, but make every public claim precise, documented, charitable, and strong enough to survive serious scrutiny.</p></div>
+            <div class="gameplan-mark"><span>AD</span><strong>FONTES</strong><small>to the sources</small></div>
+          </section>
+
+          <section class="gameplan-charter">
+            <div><span class="kicker">Recommended upgrade</span><h2>The channel charter</h2></div>
+            <blockquote>Saving the Reformation retrieves Scripture, confessions, patristic texts, and historical scholarship to explain and defend Reformed theology without flattening the evidence or caricaturing rival traditions.</blockquote>
+          </section>
+
+          <div class="gameplan-grid">
+            <section class="gameplan-card standards-card"><header><span>Ⅰ</span><div><h3>Scholarly editorial standard</h3><p>The review gate for every serious episode</p></div></header><ol id="scholarlyStandards"></ol></section>
+            <section class="gameplan-card identity-card"><header><span>Ⅱ</span><div><h3>Channel identity</h3><p>Refined from the initial gameplan</p></div></header><div id="channelIdentity"></div><div class="brand-board" id="gameplanBrandBoard"></div></section>
+          </div>
+
+          <section class="gameplan-section">
+            <div class="gameplan-section-heading"><div><span class="kicker">Four durable lanes</span><h2>Content pillars</h2></div><p>The original series ideas are retained, but organized under more precise public-facing names.</p></div>
+            <div class="pillar-grid" id="gameplanPillars"></div>
+          </section>
+
+          <section class="gameplan-section">
+            <div class="gameplan-section-heading"><div><span class="kicker">Initial concepts preserved</span><h2>Episode idea bank</h2></div><p>These concepts came from the supplied gameplan. Create an editable episode from any idea when the team is ready.</p></div>
+            <div class="gameplan-ideas" id="gameplanIdeas"></div>
+          </section>
+
+          <section class="gameplan-section launch-roadmap-section">
+            <div class="gameplan-section-heading"><div><span class="kicker">Draft—not a locked promise</span><h2>Initial five-video roadmap</h2></div><p>A cleaner planning sequence drawn from the original launch calendar.</p></div>
+            <div class="launch-roadmap" id="gameplanRoadmap"></div>
+          </section>
+
+          <div class="gameplan-grid gameplan-strategy-grid">
+            <section class="gameplan-card"><header><span>Ⅴ</span><div><h3>Growth without cheapening the work</h3><p>Refined from the original growth plan</p></div></header><div class="strategy-list" id="gameplanGrowth"></div></section>
+            <section class="gameplan-card"><header><span>Ⅵ</span><div><h3>Channel foundation</h3><p>Initial setup and distribution system</p></div></header><div class="foundation-list" id="gameplanFoundation"></div></section>
+          </div>
+
+          <div class="gameplan-grid lower-gameplan-grid">
+            <section class="gameplan-card"><header><span>Ⅲ</span><div><h3>Weekly production rhythm</h3><p>The original Monday-to-Friday workflow</p></div></header><div class="workflow-list" id="gameplanWorkflow"></div></section>
+            <section class="gameplan-card"><header><span>Ⅳ</span><div><h3>Initial team map</h3><p>Roles recorded in the supplied gameplan</p></div></header><div class="role-list" id="gameplanRoles"></div><small class="gameplan-caution">Treat these as the initial draft assignments and confirm them with each person.</small></section>
+          </div>
         </div>
 
         <div class="tab-panel" id="filesPanel">

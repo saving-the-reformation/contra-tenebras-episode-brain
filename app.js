@@ -198,6 +198,112 @@ function renderProduction(){
   $$('[data-task-delete]').forEach(button=>button.addEventListener("click",()=>{const task=tasks.find(item=>item.id===button.dataset.taskDelete);if(!task||!confirm(`Delete the task “${task.title}”?`))return;ep.productionTasks=tasks.filter(item=>item.id!==task.id);persistWorkspace();renderProduction();renderHeader();showToast("Custom task deleted.")}));
 }
 
+const scholarlyStandards=[
+  "State one precise thesis and define what the episode is—and is not—claiming.",
+  "Steelman the strongest opposing case from official or representative sources.",
+  "Lead with primary texts; use modern scholarship to interpret, qualify, and contextualize.",
+  "Distinguish doctrine, historical development, institutional reception, and later polemical use.",
+  "Mark disputed translations, dating questions, and scholarly disagreements honestly.",
+  "Run an anachronism check before connecting patristic material to later Reformed theology.",
+  "Put exact quotations and citations on screen and maintain a public episode bibliography.",
+  "Require theological review, historical review, and a final charity-and-clarity review."
+];
+
+const gameplanPillars=[
+  {number:"01",title:"Patristic Retrieval",subtitle:"From Augustine to Fulgentius, the Scythian monks, Orange, and beyond",description:"Primary-source historical theology that traces real continuities without turning the fathers into displaced modern Protestants.",tone:"navy"},
+  {number:"02",title:"Claims in Context",subtitle:"Original working concept: “Baking the Papist Objections”",description:"Examine Catholic and Orthodox claims through Scripture, official documents, patristic evidence, and historical development—firmly, but without caricature.",tone:"burgundy"},
+  {number:"03",title:"Doctrines of Grace",subtitle:"Original working concept: “TULIP Unpacked”",description:"Accessible explanations of Reformed soteriology grounded in Scripture, confessions, historical context, and careful answers to common objections.",tone:"olive"},
+  {number:"04",title:"Confessions in 60",subtitle:"Short-form source retrieval",description:"One confession paragraph, one historical question, and one clear explanation designed to lead viewers into the longer episodes.",tone:"gold"}
+];
+
+const gameplanIdeas=[
+  {pillar:"Claims in Context",title:"Leo’s Tome and the Real Papacy",description:"Does Leo I establish later papal supremacy, or does the evidence require a more careful account of Roman primacy and reception?"},
+  {pillar:"Claims in Context",title:"Matthew 16:18 — Was Peter the First Pope?",description:"Steelman the Catholic reading of the rock and keys, then examine the biblical, patristic, and historical evidence."},
+  {pillar:"Claims in Context",title:"The Canon Problem — Who Gave You the Bible?",description:"Distinguish recognition, reception, authority, and the historical formation of the canon."},
+  {pillar:"Claims in Context",title:"Trent and Scripture — Sola Scriptura Examined",description:"Compare the actual conciliar texts with careful Reformed claims about Scripture, tradition, and authority."},
+  {pillar:"Claims in Context",title:"Purgatory — Doctrine and Development",description:"Trace the sources, stages, and theological logic behind the doctrine rather than relying on slogans."},
+  {pillar:"Claims in Context",title:"The Real Presence — Calvin and Transubstantiation",description:"Explain what Reformed sacramental theology affirms before comparing it with the Roman account."},
+  {pillar:"Claims in Context",title:"Apostolic Succession Without the Pope",description:"Explore how Reformed ecclesiology understands continuity, ministry, confession, and catholicity."},
+  {pillar:"Claims in Context",title:"Was the Early Church Roman Catholic?",description:"Replace an all-or-nothing question with a documented comparison of doctrines, institutions, and developments."},
+  {pillar:"Doctrines of Grace",title:"Total Depravity — Why It Is Not a Depressing Doctrine",description:"Use Scripture and WCF 6 to show how a serious doctrine of sin magnifies grace and the necessity of Christ."},
+  {pillar:"Doctrines of Grace",title:"Unconditional Election — Providence, Not Fatalism",description:"Clarify divine purpose, creaturely agency, mercy, and the difference between election and impersonal fate."},
+  {pillar:"Doctrines of Grace",title:"Limited Atonement — The Misunderstood L",description:"Separate accomplishment, intent, sufficiency, application, and the historical Reformed debate."},
+  {pillar:"Doctrines of Grace",title:"Irresistible Grace and the Renewed Will",description:"Explain effectual calling without describing grace as external coercion."},
+  {pillar:"Doctrines of Grace",title:"Perseverance of the Saints",description:"Move beyond the slogan “once saved, always saved” to preservation, perseverance, means, and assurance."},
+  {pillar:"Doctrines of Grace",title:"TULIP Does Not Mean What You Think",description:"Correct five common caricatures while explaining where the acronym helps and where it oversimplifies."},
+  {pillar:"Confessions in 60",title:"WCF 1.1 — Why Scripture Is Necessary",description:"A short explanation of revelation, preservation, and the necessity of Scripture."},
+  {pillar:"Confessions in 60",title:"WCF 3.1 — God’s Decree Is Not Fate",description:"Explain the confession’s simultaneous concern for divine decree and creaturely agency."},
+  {pillar:"Confessions in 60",title:"WCF 27.1 — What Is a Sacrament?",description:"Define signs, seals, covenant promises, and ecclesial administration."},
+  {pillar:"Confessions in 60",title:"Heidelberg 1 — Your Only Comfort",description:"Use the opening answer to introduce belonging to Christ, assurance, and the shape of the Christian life."},
+  {pillar:"Confessions in 60",title:"CCC 882 — What Rome Claims About the Pope",description:"Read the official claim precisely before offering analysis or critique."},
+  {pillar:"Channel Foundations",title:"Five Catholic Objections to Sola Fide",description:"Present five objections in their strongest form, then answer them biblically, historically, and confessionally."},
+  {pillar:"Channel Foundations",title:"What Reformed Christians Actually Believe",description:"A broad, welcoming introduction to Scripture, covenant, grace, worship, church, and the Christian life."}
+];
+
+const launchRoadmap=[
+  ["1","Matthew 16:18 — Was Peter the First Pope?","Claims in Context"],
+  ["2","Total Depravity — Why It Is Not a Depressing Doctrine","Doctrines of Grace"],
+  ["3","The Canon Problem — Who Gave You the Bible?","Claims in Context"],
+  ["4","CCC 882 — What Rome Claims About the Pope","Confessions in 60"],
+  ["5","Limited Atonement — The Misunderstood L","Doctrines of Grace"]
+];
+
+function renderGameplan(){
+  $("#scholarlyStandards").innerHTML=scholarlyStandards.map((standard,index)=>`<li><span>${String(index+1).padStart(2,"0")}</span><p>${clean(standard)}</p></li>`).join("");
+  $("#channelIdentity").innerHTML=[
+    ["Public brand","Saving the Reformation"],
+    ["Motto","Post Tenebras Lux — After darkness, light"],
+    ["Editorial feel","Historically grounded, source-forward, serious, and accessible"],
+    ["Core format","8–15 minute scripted voiceover essays with restrained slides"],
+    ["Visual system","Navy and gold, with aged olive and burgundy accents"],
+    ["Cadence","Aim for weekly publication only when the review gate is complete"]
+  ].map(([label,value])=>`<div class="identity-row"><span>${label}</span><strong>${value}</strong></div>`).join("");
+  $("#gameplanBrandBoard").innerHTML=`<span>Original naming board</span><div><b>Post Tenebras Lux</b><b>Ad Fontes</b><b>Sola Collective</b><b>Vindicate</b><b>Curia Refutada</b></div><p><strong>Best refinement:</strong> keep <em>Saving the Reformation</em> as the public brand, use <em>Post Tenebras Lux</em> as the motto, and reserve <em>Ad Fontes</em> for a source-focused segment.</p>`;
+  $("#gameplanPillars").innerHTML=gameplanPillars.map(pillar=>`<article class="pillar-card pillar-${pillar.tone}"><span>${pillar.number}</span><h3>${clean(pillar.title)}</h3><small>${clean(pillar.subtitle)}</small><p>${clean(pillar.description)}</p></article>`).join("");
+  const grouped=[...new Set(gameplanIdeas.map(idea=>idea.pillar))];
+  $("#gameplanIdeas").innerHTML=grouped.map(group=>`<section class="idea-bank-group"><header><h3>${clean(group)}</h3><b>${gameplanIdeas.filter(idea=>idea.pillar===group).length}</b></header><div>${gameplanIdeas.map((idea,index)=>({idea,index})).filter(item=>item.idea.pillar===group).map(({idea,index})=>{const exists=episodes.some(ep=>ep.title.trim().toLowerCase()===idea.title.trim().toLowerCase());return `<article class="gameplan-idea"><div><strong>${clean(idea.title)}</strong><p>${clean(idea.description)}</p></div><button data-create-gameplan="${index}" ${exists?"disabled":""}>${exists?"Episode added":"＋ Create episode"}</button></article>`}).join("")}</div></section>`).join("");
+  $("#gameplanRoadmap").innerHTML=`<div class="roadmap-note"><strong>Editorial note</strong><span>The original document contains two different launch recommendations. This roadmap follows its later, more detailed five-video calendar and should remain adjustable.</span></div>${launchRoadmap.map(([week,title,series])=>`<article><span>Week ${week}</span><strong>${clean(title)}</strong><small>${clean(series)}</small></article>`).join("")}`;
+  $("#gameplanWorkflow").innerHTML=[
+    ["Mon–Tue","Research dossier","Build a source matrix: primary texts, official opposing sources, modern scholarship, and unresolved questions."],
+    ["Wednesday","Script and review","Draft the script, steelman the counterclaim, then run theological and historical review."],
+    ["Wed–Thu","Record","Record only after the citations, names, quotations, and central thesis are locked."],
+    ["Thursday","Slides and edit","Use restrained visuals, exact quotation slides, and clear source attribution."],
+    ["Friday","Release gate","Final watch-through, captions, bibliography, description, thumbnail, and scheduling."]
+  ].map(([day,title,description])=>`<div class="workflow-step"><span>${day}</span><div><strong>${title}</strong><p>${description}</p></div></div>`).join("");
+  $("#gameplanGrowth").innerHTML=[
+    ["Shorts as entry points","Publish source-based clips that point to a complete long-form argument instead of isolating outrage moments."],
+    ["Discord question pipeline","Turn recurring team and audience questions into researched Q&A episodes and future dossiers."],
+    ["Response videos","Respond to the strongest version of a public argument, link the source, and avoid personality-driven rage bait."],
+    ["Conversations and debates","Use prepared source packets, clear propositions, and post-event bibliographies for livestream discussions."],
+    ["Community and comments","Use polls to test questions, then engage substantive comments during the first 48 hours after release."],
+    ["Evergreen library","Connect episodes through playlists, end screens, descriptions, and recurring series architecture."]
+  ].map(([title,description])=>`<div class="strategy-row"><span>✦</span><div><strong>${title}</strong><p>${description}</p></div></div>`).join("");
+  $("#gameplanFoundation").innerHTML=[
+    ["Brand system","Channel banner, profile mark, motto, thumbnail system, and reusable slide template"],
+    ["Publishing system","Sustainable release day, episode bibliography template, description template, and upload checklist"],
+    ["Community bridge","Discord link and invitation language in every relevant description and end card"],
+    ["Short-form system","A repeatable 60–90 second excerpt workflow tied to each long-form episode"],
+    ["Source archive","Shared folders for scripts, slide decks, images, audio, primary texts, and modern scholarship"],
+    ["Measurement","Review retention, click-through rate, comments, and returning viewers without letting analytics dictate doctrine"]
+  ].map(([title,description])=>`<div class="foundation-row"><span></span><div><strong>${title}</strong><p>${description}</p></div></div>`).join("");
+  $("#gameplanRoles").innerHTML=[
+    ["Sword","Creative direction, topic selection, series planning, scripts and research"],
+    ["Titus / TitusThundr","Voiceover, script reading, and theological precision review"],
+    ["Esther","Channel management, branding, thumbnails, and clarity editing"],
+    ["ZonZ / Jason / TRC / SBM","Research, script writing, sourcing, and theological consultation"],
+    ["Dexter’s Lab","Editing, slide design, and production"]
+  ].map(([name,role])=>`<div class="role-row"><span>${clean(name).slice(0,1)}</span><div><strong>${clean(name)}</strong><p>${clean(role)}</p></div></div>`).join("");
+  $$('[data-create-gameplan]').forEach(button=>button.addEventListener("click",()=>createGameplanEpisode(Number(button.dataset.createGameplan))));
+}
+
+function createGameplanEpisode(index){
+  const idea=gameplanIdeas[index];
+  if(!idea)return;
+  const number=Math.max(...episodes.map(ep=>ep.number),0)+1;
+  const ep={id:`ep-${Date.now()}`,number,title:idea.title,shortTitle:idea.title,description:idea.description,status:"Gameplan idea",thesis:"Define a precise, source-driven thesis before scripting this episode.",needs:["State the strongest opposing claim from representative sources.","Collect and verify the central primary texts.","Identify modern scholarship and disputed points.","Define the Reformed conclusion without anachronism or caricature."],segments:[]};
+  episodes.push(ep);activeEpisodeId=ep.id;activeTab="brain";localStorage.setItem("ctActiveEpisode",activeEpisodeId);persistWorkspace();renderAll();showToast(`Episode ${number} created from the gameplan.`);
+}
+
 const materialCategories=["Scripts & outlines","Slides & graphics","Research & sources","Audio & video","Other links"];
 function normalizeUrl(value){const trimmed=value.trim();return /^https?:\/\//i.test(trimmed)?trimmed:`https://${trimmed}`}
 function renderFiles(){const episodeLinks=files.filter(item=>item.episodeId===activeEpisodeId);$("#episodeFiles").innerHTML=materialCategories.map((category,index)=>{const categoryLinks=episodeLinks.filter(item=>(item.category||"Other links")===category).sort((a,b)=>new Date(b.addedAt||b.uploadedAt)-new Date(a.addedAt||a.uploadedAt));return `<section class="material-group"><header><span class="material-group-icon">${["S","P","R","A","+"][index]}</span><div><h3>${category}</h3><p>${["Working scripts, outlines, and drafts","Slide decks, thumbnails, and visual references","Articles, books, PDFs, and source collections","Recordings, music, clips, and video references","Anything that does not fit another section"][index]}</p></div><b>${categoryLinks.length}</b></header><div class="material-links">${categoryLinks.length?categoryLinks.map(link=>`<article class="material-link"><div><a href="${clean(link.url)}" target="_blank" rel="noopener">${clean(link.name)}</a><p>Added by ${clean(link.nameAddedBy||"Team")} · ${new Date(link.addedAt||link.uploadedAt).toLocaleDateString()}</p></div><div class="material-actions"><button data-edit-material="${link.id}">Edit</button><a href="${clean(link.url)}" target="_blank" rel="noopener">Open ↗</a><button data-delete-material="${link.id}">Delete</button></div></article>`).join(""):`<div class="material-empty">No links in this section yet.</div>`}</div></section>`}).join("");$$('[data-delete-material]').forEach(button=>button.addEventListener("click",()=>{const item=files.find(link=>link.id===button.dataset.deleteMaterial);if(!item||!confirm(`Delete the link “${item.name}”?`))return;files=files.filter(link=>link.id!==item.id);persistWorkspace();renderFiles();showToast("Link deleted.")}));$$('[data-edit-material]').forEach(button=>button.addEventListener("click",()=>{const item=files.find(link=>link.id===button.dataset.editMaterial);if(!item)return;editingMaterialId=item.id;$("#materialCategory").value=item.category||"Other links";$("#materialName").value=item.name;$("#materialUrl").value=item.url;$("#materialSubmitButton").textContent="Save link";$("#materialName").focus()}))}
@@ -207,7 +313,7 @@ function renderTabs(){
   $$(".tab-panel").forEach(panel=>panel.classList.remove("active"));$("#"+activeTab+"Panel").classList.add("active");
 }
 
-function renderAll(){renderEpisodes();renderHeader();renderCards();renderPlan();renderAbout();renderProduction();renderFiles();renderTabs()}
+function renderAll(){renderEpisodes();renderHeader();renderCards();renderPlan();renderAbout();renderProduction();renderGameplan();renderFiles();renderTabs()}
 function persistWorkspace(){localStorage.setItem("ctCards",JSON.stringify(cards));localStorage.setItem("ctEpisodes",JSON.stringify(episodes));localStorage.setItem("ctFiles",JSON.stringify(files));saveWorkspace({episodes,cards,files}).catch(error=>console.error("Remote save failed",error))}
 function saveCards(){persistWorkspace()}
 function saveEpisodes(){persistWorkspace()}

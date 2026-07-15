@@ -21,6 +21,7 @@ Then visit `http://localhost:4173`.
 - The real Episode 1 thesis and seven-segment outline
 - A full production-to-publish checklist for every episode
 - Live progress bars, task owners, deadlines, and custom tasks
+- A channel gameplan with scholarly review standards, content pillars, launch ideas, workflow, and team roles
 - Organized links for scripts, slides, research, audio, and video
 - Easy creation of additional episodes
 - Responsive desktop and mobile layouts
